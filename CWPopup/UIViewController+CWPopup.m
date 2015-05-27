@@ -207,6 +207,10 @@ NSString const *CWPopupViewOffset = @"CWPopupViewOffset";
     }
     blurView.alpha = 0.0f;
     blurView.image = [self getBlurredImage:[self getScreenImage]];
+    blurView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    [blurView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:blurView];
     [self.view bringSubviewToFront:self.popupViewController.view];
     objc_setAssociatedObject(self, &CWBlurViewKey, blurView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -377,6 +381,10 @@ NSString const *CWPopupViewOffset = @"CWPopupViewOffset";
             }];
         }
     }];
+}
+
+- (void)dismissPopup {
+    [self dismissPopupViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - popupViewController getter/setter
